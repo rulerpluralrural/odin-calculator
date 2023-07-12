@@ -6,6 +6,17 @@
     box-sizing: border-box;
 }
 
+::-webkit-scrollbar {
+    width: .1px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(104, 103, 103);
+    border-radius: 5px;
+}
+
+
 body {
     font-family: 'Roboto Slab', serif;
     display: flex;
@@ -39,8 +50,8 @@ button {
 
 .container {
     width: 410px;
-    height: 520px;
-    background-color: rgb(56, 59, 58);
+    height: 530px;
+    background-color: rgb(52, 53, 54);
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -66,13 +77,13 @@ button {
     height: 100px;
     width: 100%;
     border-bottom: 1px solid;
-    background-color: rgb(67, 67, 71);
+    background-image: linear-gradient(180deg, rgba(75, 75, 75, 0.8), rgba(109, 108, 108, 0.6));
 }
 
 .container .input {
     height: 60px;
-    width: 100%;
-    background-color: rgb(67, 67, 71);
+    overflow: scroll;
+    background-image: linear-gradient(360deg, rgba(77, 76, 76, 0.8), rgba(107, 107, 107, 0.6));
     border-bottom: 1px solid;
 }
 
@@ -90,8 +101,8 @@ button {
     width: 100%;
 }
 
-.del-btn-container #clear,
-.del-btn-container #delete {
+.del-btn-container .clr-btn,
+.del-btn-container .del-btn {
     height: 50px;
     width: 140px;
     border-radius: 5px;
@@ -100,7 +111,7 @@ button {
     margin-block: 15px;
 }
 
-.del-btn-container #percent {
+.del-btn-container .percent-btn {
     height: 50px;
     width: 90px;
     border-radius: 5px;
@@ -109,25 +120,25 @@ button {
     color: rgb(236, 236, 243);
 }
 
-.del-btn-container #percent:hover {
+.del-btn-container .percent-btn:hover {
     background-color:  rgb(84, 83, 90);
 }
 
-.del-btn-container #clear {
+.del-btn-container .clr-btn {
     background-color: rgb(250, 3, 3);
     color: rgb(255, 255, 255);
 }
 
-.del-btn-container #clear:hover {
+.del-btn-container .clr-btn:hover {
     background-color: rgb(223, 3, 3)
 }
 
-.del-btn-container #delete {
+.del-btn-container .del-btn {
     background-color: rgb(255, 255, 0);
     color: rgb(43, 42, 42);
 }
 
-.del-btn-container #delete:hover {
+.del-btn-container .del-btn:hover {
     background-color: rgb(226, 226, 5);
 }
 
@@ -136,6 +147,7 @@ main {
     gap: 6px;
     margin-inline: 10px;
     grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 15px;
 }
 main button {
     height: 50px;

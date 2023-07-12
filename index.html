@@ -16,30 +16,30 @@
             <p>Ruralpluralrural</p>
             <i class="fa-solid fa-calculator" style="color: #e0e0e6;"></i>
         </div>
-        <div id="display" class="display end"><span id="display-span">0</span></div>
-        <div id="input" class="input end"><span id="input-span">0</span></div>
+        <div id="display" class="display end"><span id="display-span"></span></div>
+        <div id="input" class="input end"><span id="input-span"></span></div>
         <div class="del-btn-container">
-            <button id="clear" title="Clear All">CLEAR</button>
-            <button id="delete" title="Delete One">DELETE</button>
-            <button id="percent" title="Percentage">%</button>
+            <button class="clr-btn" data-clear="clear" title="Clear All">CLEAR</button>
+            <button class="del-btn" data-delete="del"  title="Delete One">DELETE</button>
+            <button class="percent-btn" data-operator="percent" title="Percentage">%</button>
         </div>
     <main>
-        <button class="area-a">1</button>
-        <button class="area-a">2</button>
-        <button class="area-a">3</button>
-        <button class="area-a" title="Divide">÷</button>
-        <button class="area-a">4</button>
-        <button class="area-a">5</button>
-        <button class="area-a">6</button>
-        <button class="area-a" title="Multiply">×</button>
-        <button class="area-a">7</button>
-        <button class="area-a">8</button>
-        <button class="area-a">9</button>
-        <button class="area-a" title="Subtract">-</button>
-        <button class="area-a">.</button>
-        <button class="area-c">0</button>
-        <button class="area-b" title="Equals">=</button>
-        <button class="area-a" title="Add">+</button>
+        <button data-number="1">1</button>
+        <button data-number="2">2</button>
+        <button data-number="3">3</button>
+        <button id="div-btn" data-operator="div" title="Divide">÷</button>
+        <button data-number="4">4</button>
+        <button data-number="5">5</button>
+        <button data-number="6">6</button>
+        <button id="times-btn" data-operator="times" title="Multiply">&times;</button>
+        <button data-number="7">7</button>
+        <button data-number="8">8</button>
+        <button data-number="9">9</button>
+        <button id="minus-btn" data-operator="minus" title="Subtract">-</button>
+        <button id="dot-btn" data-number="dot">.</button>
+        <button data-number="0">0</button>
+        <button data-equals="equals" value="equals" title="Equals">=</button>
+        <button data-operator="add" title="Add">+</button>
     </main>
     </div>
     <script src="script.js"></script>
