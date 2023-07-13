@@ -1,67 +1,87 @@
 // display variables
-const input = document.querySelector('#input-span');
-const display = document.querySelector('#display-span');
+const currentScreen = document.querySelector('#input-span');
+const prevScreen = document.querySelector('#display-span');
 
 // button variables
-const keys = document.querySelectorAll('[data-number]');
+const numberKeys = document.querySelectorAll('[data-number]');
 const operators = document.querySelectorAll('[data-operator]');
 const equals = document.querySelector('[data-equals]');
 const clear = document.querySelector('[data-clear]');
 const del = document.querySelector('[data-delete]');
+const decimal = document.querySelector('[data-decimal');
 
+let operation = "";
 let prevVal = null;
-let currentVal = null;
 
 del.addEventListener('click', delBtn)
-
 clear.addEventListener('click', clearBtn)
+equals.addEventListener('click', assesment)
+decimal.addEventListener('click', decimalBtn)
 
-keys.forEach(key => {
-    key.addEventListener('click', numPress)
+numberKeys.forEach(button => {
+    button.addEventListener('click', () => numPress(button.textContent))
 })
-
-function numPress(val) {
-
-    if (val.target.textContent === '.' && input.textContent.includes('.')) return;
-
-    input.textContent += val.target.textContent;
-}
 
 operators.forEach(operand => {
     operand.addEventListener('click', operatorPress)
 })
 
-function operatorPress(e) {
+function numPress(num) {
+    currentScreen.textContent += num;
+}
+
+function operatorPress() {
+
+    if (currentScreen.textContent === '') {
+        if (prevScreen.textContent === '') return;
+        operation = this.getAttribute('data-operator');
+        prevScreen.textContent = `${prevVal} ${this.textContent}`;
+        return;
+    }
 
     if (prevVal === null) {
-        prevVal = parseFloat(input.textContent);
-        display.textContent = `${prevVal} ${this.textContent}`;
-        input.textContent = '';
-        return;
-    }
-    if (prevVal !== null) {
+        prevVal = currentScreen.textContent;
+        prevScreen.textContent = `${prevVal} ${this.textContent}`;
+        currentScreen.textContent = '';
+        operation = this.getAttribute('data-operator');
         return;
     }
 
-    prevVal = operator(this.getAttribute('data-operator'), prevVal, currentVal);
-    currentVal = parseFloat(input.textContent);
-    
-    display.textContent = `${prevVal} ${this.textContent}`;
-    input.textContent = '';
+    prevVal = operate(operation, prevVal, currentScreen.textContent);
+    operation = this.getAttribute('data-operator');
+    prevScreen.textContent = `${prevVal} ${this.textContent}`;
+    currentScreen.textContent = '';
 
 }   
 
+//Equal Button function 
+function assesment() {
+    if (currentScreen.textContent === '' || prevVal === null) return;
+    if (operation === 'div' && currentScreen.textContent === '0') {
+        prevScreen.textContent = `Error, Press Clear`;
+        return;
+    }
+
+    prevVal = operate(operation, prevVal, parseFloat(currentScreen.textContent))
+    prevScreen.textContent = prevVal;
+    currentScreen.textContent = '';
+}
+
 //Clear Button function
 function clearBtn() { 
-        input.textContent = '';
-        display.textContent = '';
+        currentScreen.textContent = '';
+        prevScreen.textContent = '';
         prevVal = null;
-        currentVal = null;
 }
 
 // Delete button function
 function delBtn() {
-    input.textContent = input.textContent.slice(0, -1)
+    currentScreen.textContent = currentScreen.textContent.slice(0, -1)
+}
+
+function decimalBtn() {
+    if (currentScreen.textContent.includes('.')) return;
+    currentScreen.textContent += '.';
 }
 
 // Operands function
@@ -75,7 +95,7 @@ function subtract(a, b) {
 
 function divide(a, b) {
     if (b === 0) {
-        return 'null';
+        return null;
     }
     return a / b;
 }
@@ -84,7 +104,14 @@ function multiply(a, b) {
     return a * b;
 }
 
-function operator(operand, firstValue, secondValue) {
+function percent(a) {
+    return a / 100;
+}
+
+function operate(operand, firstValue, secondValue) {
+
+firstValue = parseFloat(firstValue);
+secondValue = parseFloat(secondValue);
 
     switch(operand) {
         case 'add':
@@ -95,5 +122,21 @@ function operator(operand, firstValue, secondValue) {
         return divide(firstValue, secondValue);
         case 'times':
         return multiply(firstValue,secondValue);
+        case 'percent':
+        return percent(firstValue);
     }
 }
+
+window.addEventListener('keydown', keyboardHandler)
+
+function keyboardHandler(e) {
+    if(e.key >= 0 && e.key <= 9) numPress(e.key);
+    if(e.key === '=' || e.key === 'Enter') assesment(e.key);
+    if(e.key === 'Backspace') delBtn();
+    if(e.key === '.') decimalBtn();
+    if(e.key === 'Escape') clearBtn();
+    if(e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') operatorPress();
+}
+
+
+
