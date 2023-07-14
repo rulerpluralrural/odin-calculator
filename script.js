@@ -4,11 +4,14 @@ const prevScreen = document.querySelector('#display-span');
 
 // button variables
 const numberKeys = document.querySelectorAll('[data-number]');
-const operators = document.querySelectorAll('[data-operator]');
+const operatorKeys = document.querySelectorAll('[data-operator]');
 const equals = document.querySelector('[data-equals]');
 const clear = document.querySelector('[data-clear]');
 const del = document.querySelector('[data-delete]');
 const decimal = document.querySelector('[data-decimal');
+
+// toggle darkmode
+const toggleMode = document.getElementById('checkbox');
 
 let operation = "";
 let prevVal = null;
@@ -18,40 +21,49 @@ clear.addEventListener('click', clearBtn)
 equals.addEventListener('click', assesment)
 decimal.addEventListener('click', decimalBtn)
 
-numberKeys.forEach(button => {
-    button.addEventListener('click', () => numPress(button.textContent))
+toggleMode.addEventListener('change', () => {
+    document.body.classList.toggle('dark');
+    const calculator = document.querySelector('.container');
+    calculator.classList.toggle('container-dark');
+    prevScreen.classList.toggle('text-dark');
+    currentScreen.classList.toggle('text-dark');
+
 })
 
-operators.forEach(operand => {
-    operand.addEventListener('click', operatorPress)
+numberKeys.forEach(number => {
+    number.addEventListener('click', () => numPress(number.textContent))
+})
+
+operatorKeys.forEach(operand => {
+    operand.addEventListener('click', () => operatorPress(operand.textContent, operand.getAttribute('data-operator')))
 })
 
 function numPress(num) {
     currentScreen.textContent += num;
+    console.log(num)
 }
 
-function operatorPress() {
-
+function operatorPress(operator, operatorAtt) {
+    console.log(operator, operatorAtt)
     if (currentScreen.textContent === '') {
         if (prevScreen.textContent === '') return;
-        operation = this.getAttribute('data-operator');
-        prevScreen.textContent = `${prevVal} ${this.textContent}`;
+        operation = operatorAtt;
+        prevScreen.textContent = `${prevVal} ${operator}`;
         return;
     }
 
     if (prevVal === null) {
         prevVal = currentScreen.textContent;
-        prevScreen.textContent = `${prevVal} ${this.textContent}`;
+        prevScreen.textContent = `${prevVal} ${operator}`;
         currentScreen.textContent = '';
-        operation = this.getAttribute('data-operator');
+        operation = operatorAtt;
         return;
     }
 
     prevVal = operate(operation, prevVal, currentScreen.textContent);
-    operation = this.getAttribute('data-operator');
-    prevScreen.textContent = `${prevVal} ${this.textContent}`;
+    operation = operatorAtt;
+    prevScreen.textContent = `${prevVal} ${operator}`;
     currentScreen.textContent = '';
-
 }   
 
 //Equal Button function 
@@ -127,6 +139,7 @@ secondValue = parseFloat(secondValue);
     }
 }
 
+// Keyboard event listener
 window.addEventListener('keydown', keyboardHandler)
 
 function keyboardHandler(e) {
@@ -135,7 +148,11 @@ function keyboardHandler(e) {
     if(e.key === 'Backspace') delBtn();
     if(e.key === '.') decimalBtn();
     if(e.key === 'Escape') clearBtn();
-    if(e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/') operatorPress();
+    if(e.key === '+') operatorPress(e.key, 'add');
+    if(e.key === '-') operatorPress(e.key, 'minus');
+    if(e.key === '*') operatorPress('×', 'times');
+    if(e.key === '/') operatorPress('÷', 'div');
+    if(e.key === '%') operatorPress(e.key, 'percent');
 }
 
 
